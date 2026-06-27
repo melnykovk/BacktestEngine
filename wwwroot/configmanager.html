@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Backtest Engine</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/7.0.7/signalr.min.js"></script>
+
+    <link rel="stylesheet" href="css/base/nav.css">
+    <link rel="stylesheet" href="css/base/result.css">
+    <link rel="stylesheet" href="css/configmanager.css">
+
+</head>
+
+<body>
+    <div class="app-shell">
+        <div class="app-layout">
+
+            <aside class="sidebar">
+                <h2>Menu</h2>
+                <nav class="nav">
+                    <a href="/testing" class="nav-button">Testing</a>
+                    <a href="/configmanager" class="nav-button active">Backtest Config</a>
+                    <a href="/dbmanager" class="nav-button">Database Information</a>
+                </nav>
+            </aside>
+
+            <main class="workspace">
+                <h1>Workspace</h1>
+
+                <div class="result-block">
+                    <h2>Result</h2>
+                    <div id="result"></div>
+                </div>
+
+            </main>
+
+            <aside class="config-panel">
+                <h2>Backtest Config</h2>
+
+
+
+                <div class="structure-block">
+                    <h3>Data Config</h3>
+
+                    <label for="symbol">Symbol</label>
+                    <select id="symbol">
+                        <option value="btcusdt">BTCUSDT</option>
+                    </select>
+
+                    <label for="interval">Interval</label>
+                    <select id="interval">
+                        <option value="1m">1m</option>
+                        <option value="5m">5m</option>
+                        <option value="15m">15m</option>
+                        <option value="30m">30m</option>
+                        <option value="1h">1h</option>
+                        <option value="4h">4h</option>
+                        <option value="12h">12h</option>
+                        <option value="1d">1d</option>
+                    </select>
+
+                    <label for="startDate">Start Date</label>
+                    <input id="startDate" type="date">
+
+                    <label for="endDate">End Date</label>
+                    <input id="endDate" type="date">
+
+                    <div class="tabs">
+                        <button class="tab-button" data-tab="strategy">
+                            Strategy
+                        </button>
+
+                        <button class="tab-button" data-tab="rules">
+                            Rules
+                        </button>
+                    </div>
+
+                    <h3>Strategy Config</h3>
+
+                    <label for="startingQuote">Starting Balance</label>
+                    <input id="startingQuote" type="number" placeholder="1000" value="1000" step="500">
+
+                    <div id="strategy-params"></div>
+                    <h3>Rules Config</h3>
+                    <div id="rules-params"></div>
+
+                    <div id="runsCount">
+                        <span class="runs-count">Runs to execute: <span id="runsNumber">0</span></span>
+                    </div>
+
+                    <button class="action-button" id="startBacktest">Start Backtest</button>
+                </div>
+            </aside>
+
+
+        </div>
+    </div>
+    <script src="js/configmanager.js"></script>
+</body>
+
+</html>

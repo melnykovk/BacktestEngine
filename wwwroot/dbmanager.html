@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Backtest Engine</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/7.0.7/signalr.min.js"></script>
+
+    <link rel="stylesheet" href="css/base/nav.css">
+    <link rel="stylesheet" href="css/base/result.css">
+    <link rel="stylesheet" href="css/dbmanager.css">
+</head>
+
+<body>
+    <div class="app-shell">
+
+        <div class="app-layout">
+
+            <aside class="sidebar">
+                <h2>Menu</h2>
+                <nav class="nav">
+                    <a href="/testing" class="nav-button">Testing</a>
+                    <a href="/configmanager" class="nav-button">Backtest Config</a>
+                    <a href="/dbmanager" class="nav-button active">Database Information</a>
+                </nav>
+            </aside>
+
+            <main class="workspace">
+                <h1>Database</h1>
+
+                <div id="dbInfoStatus" class="status-text">
+                    Loading database information...
+                </div>
+
+                <div class="table-wrapper">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Symbol</th>
+                                <th>Interval</th>
+                                <th>First Candle</th>
+                                <th>Last Candle</th>
+                                <th>Candles Count</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="dbInfoTableBody"></tbody>
+
+                    </table>
+                </div>
+
+                <div class="result-block">
+                    <h2>Result</h2>
+                    <div id="result"></div>
+                </div>
+
+            </main>
+
+            <aside class="config-panel">
+                <h2>Upload Candles</h2>
+                <h3>Data Config </h3>
+
+                <div class="data-input">
+                    <label for="symbol">Symbol</label>
+                    <input type="text" id="symbol" placeholder="Trading symbol (e.g. BTCUSDT)">
+                </div>
+
+                <div class="data-input">
+                    <label for="symbol">Interval</label>
+                    <select id="interval">
+                        <option value="1m">1m</option>
+                        <option value="5m">5m</option>
+                        <option value="15m">15m</option>
+                        <option value="30m">30m</option>
+                        <option value="1h">1h</option>
+                        <option value="4h">4h</option>
+                        <option value="12h">12h</option>
+                        <option value="1d">1d</option>
+                    </select>
+                </div>
+
+                <div class="data-input">
+                    <label for="symbol">Start Date</label>
+                    <input type="date" id="startDate">
+                </div>
+
+                <div class="data-input">
+                    <label for="symbol">End Date</label>
+                    <input type="date" id="endDate">
+                </div>
+
+                <button id="loadDataButton" class="action-button">
+                    <span id="loadSpinner" class="spinner" hidden></span>
+                    <span id="loadButtonText">Load Data</span>
+                </button>
+
+            </aside>
+        </div>
+
+        <script src="js/dbmanager.js"></script>
+</body>
+
+</html>

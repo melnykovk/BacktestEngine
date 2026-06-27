@@ -1,0 +1,10 @@
+bin/
+obj/
+.VSCodeCounter/
+.vs/
+.vscode/
+*.user
+*.suo
+*.cache
+appsetings.Development.json
+appsetings.json

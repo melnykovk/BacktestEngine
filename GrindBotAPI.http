@@ -1,0 +1,6 @@
+@GrindBotAPI_HostAddress = http://localhost:5269
+
+GET {{GrindBotAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

@@ -1,0 +1,132 @@
+/* === DB Manager Styles === */
+.workspace,
+.config-panel {
+    background: #fff;
+    border: 1px solid #e1e1e1;
+    border-radius: 10px;
+    padding: 12px;
+    box-sizing: border-box;
+    min-width: 0;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.05);
+}
+
+.config-panel h2 {
+    padding: 10px 12px;
+    margin-top: 6px;
+    margin-bottom: 16px;
+    text-align: center;
+    border-bottom: 1px solid #e1e1e1;
+}
+
+/* ===== Action Button ===== */
+.action-button {
+    width: 100%;
+    background: #f3f4f6;
+    color: #222;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    padding: 10px 14px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.05);
+    margin-top: 12px;
+}
+
+.action-button:hover {
+    background: #e5e7eb;
+    border-color: #9ca3af;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.05);
+}
+
+.data-input:last-of-type {
+    padding-bottom: 12px;
+    border-bottom: 1px solid #ececec;
+}
+
+/* ===== Input Fields ===== */
+input,
+select {
+    width: 100%;
+    padding: 9px 10px;
+    border: 1px solid #c8c8c8;
+    border-radius: 6px;
+    box-sizing: border-box;
+    font-size: 14px;
+    background: #fff;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.05);
+}
+
+label {
+    display: block;
+    margin-top: 12px;
+    margin-bottom: 6px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.status-text {
+    margin-bottom: 12px;
+    font-size: 15px;
+    color: #555;
+}
+
+/* ===== Table ===== */
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+}
+
+.table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.data-table th,
+.data-table td {
+    padding: 10px 12px;
+    border-bottom: 1px solid #e6e6e6;
+    text-align: left;
+    white-space: nowrap;
+}
+
+.data-table th {
+    background: #f7f7f7;
+    font-weight: 600;
+    color: #333;
+    position: sticky;
+    top: 0;
+}
+
+.data-table tbody tr:hover {
+    background: #fafafa;
+}
+
+.data-table td:last-child,
+.data-table th:last-child {
+    text-align: right;
+}
+
+.spinner[hidden] {
+    display: none;
+}
+
+.spinner {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    margin-right: 8px;
+
+    border: 2px solid #cfcfcf;
+    border-top-color: #333;
+    border-radius: 50%;
+
+    vertical-align: middle;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}

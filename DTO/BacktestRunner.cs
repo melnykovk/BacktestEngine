@@ -1,7 +1,7 @@
-using GrindBotAPI.Engine.Core;
-using GrindBotAPI.Engine.Grid;
+using BacktestingEngine.Engine.Core;
+using BacktestingEngine.Engine.Grid;
 
-namespace GrindBotAPI.DTO
+namespace BacktestingEngine.DTO
 {
     public sealed class BacktestBatchRequest
     {

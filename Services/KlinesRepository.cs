@@ -1,11 +1,11 @@
-using GrindBotAPI.Data;
-using GrindBotAPI.Entity;
-using GrindBotAPI.Helpers;
+using BacktestingEngine.Data;
+using BacktestingEngine.Entity;
+using BacktestingEngine.Helpers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using GrindBotAPI.DTO;
+using BacktestingEngine.DTO;
 
-namespace GrindBotAPI.Services
+namespace BacktestingEngine.Services
 {
     public interface ICandleRepository
     {

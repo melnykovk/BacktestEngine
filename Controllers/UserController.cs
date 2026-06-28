@@ -1,9 +1,9 @@
-using GrindBotAPI.BackgroundServices;
-using GrindBotAPI.DTO;
+using BacktestingEngine.BackgroundServices;
+using BacktestingEngine.DTO;
 using Microsoft.AspNetCore.Mvc;
-using GrindBotAPI.Services;
+using BacktestingEngine.Services;
 
-namespace GrindBotAPI.Controllers
+namespace BacktestingEngine.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]

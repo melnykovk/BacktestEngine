@@ -1,6 +1,6 @@
-using GrindBotAPI.DTO;
+using BacktestingEngine.DTO;
 
-namespace GrindBotAPI.Engine.Core;
+namespace BacktestingEngine.Engine.Core;
 
 public sealed class ExecutionModel
 {

@@ -1,11 +1,11 @@
-using GrindBotAPI.Data;
-using GrindBotAPI.BackgroundServices;
-using GrindBotAPI.DTO;
+using BacktestingEngine.Data;
+using BacktestingEngine.BackgroundServices;
+using BacktestingEngine.DTO;
 using Microsoft.EntityFrameworkCore;
-using GrindBotAPI.Engine;
-using GrindBotAPI.Services;
-using GrindBotAPI.Engine.Grid;
-using GrindBotAPI.Engine.Core;
+using BacktestingEngine.Engine;
+using BacktestingEngine.Services;
+using BacktestingEngine.Engine.Grid;
+using BacktestingEngine.Engine.Core;
 
 
 var builder = WebApplication.CreateBuilder(args);

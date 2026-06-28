@@ -1,15 +1,15 @@
-using GrindBotAPI.BackgroundServices;
-using GrindBotAPI.DTO;
-using GrindBotAPI.Data;
-using GrindBotAPI.Entity;
+using BacktestingEngine.BackgroundServices;
+using BacktestingEngine.DTO;
+using BacktestingEngine.Data;
+using BacktestingEngine.Entity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using GrindBotAPI.Services;
-using GrindBotAPI.Engine;
-using GrindBotAPI.Engine.Grid;
-using GrindBotAPI.Engine.Core;
+using BacktestingEngine.Services;
+using BacktestingEngine.Engine;
+using BacktestingEngine.Engine.Grid;
+using BacktestingEngine.Engine.Core;
 
-namespace GrindBotAPI.Controllers
+namespace BacktestingEngine.Controllers
 {
 
     [ApiController]

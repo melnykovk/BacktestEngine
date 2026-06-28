@@ -2,7 +2,7 @@ using System.Collections.Concurrent;
 using Binance.Net.Objects.Models.Spot.Socket;
 
 
-namespace GrindBotAPI.DTO
+namespace BacktestingEngine.DTO
 {
     public class TradeStore
     {

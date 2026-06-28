@@ -1,9 +1,9 @@
 using System.Diagnostics;
-using GrindBotAPI.Engine.Core;
+using BacktestingEngine.Engine.Core;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
 
-namespace GrindBotAPI.Engine.Grid
+namespace BacktestingEngine.Engine.Grid
 {
     public class GridConfig
     {

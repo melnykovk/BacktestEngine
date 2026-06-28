@@ -1,4 +1,4 @@
-namespace GrindBotAPI.Helpers
+namespace BacktestingEngine.Helpers
 {
 
     public static class TimeRange

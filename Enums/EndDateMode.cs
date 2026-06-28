@@ -1,4 +1,4 @@
-namespace GrindBotAPI.Enums
+namespace BacktestingEngine.Enums
 {
     public enum EndDateMode
     {

@@ -1,5 +1,5 @@
 
-namespace GrindBotAPI.DTO
+namespace BacktestingEngine.DTO
 {
     public sealed class DbCandleSummaryDto
     {

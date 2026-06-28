@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace GrindBotAPI.Migrations
+namespace BacktestingEngine.Migrations
 {
     /// <inheritdoc />
     public partial class CreateBinanceKlinesTable : Migration

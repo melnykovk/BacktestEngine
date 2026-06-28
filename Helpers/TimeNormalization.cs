@@ -1,6 +1,6 @@
 
 
-namespace GrindBotAPI.Helpers
+namespace BacktestingEngine.Helpers
 {
 
 

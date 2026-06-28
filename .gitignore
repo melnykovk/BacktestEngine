@@ -6,5 +6,5 @@ obj/
 *.user
 *.suo
 *.cache
-appsetings.Development.json
-appsetings.json
+appsettings.Development.json
+appsettings.json

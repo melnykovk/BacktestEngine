@@ -1,8 +1,8 @@
-using GrindBotAPI.Enums;
-using GrindBotAPI.DTO;
+using BacktestingEngine.Enums;
+using BacktestingEngine.DTO;
 
 
-namespace GrindBotAPI.Engine
+namespace BacktestingEngine.Engine
 {
     public class MarketContext
     {

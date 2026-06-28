@@ -1,4 +1,4 @@
-namespace GrindBotAPI.Engine.Core;
+namespace BacktestingEngine.Engine.Core;
 
 public sealed class Portfolio
 {

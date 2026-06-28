@@ -1,18 +1,18 @@
-using GrindBotAPI.Engine.Core;
-using GrindBotAPI.Engine.Grid;
-using GrindBotAPI.DTO;
+using BacktestingEngine.Engine.Core;
+using BacktestingEngine.Engine.Grid;
+using BacktestingEngine.DTO;
 
-namespace GrindBotAPI.Engine.MarketState
+namespace BacktestingEngine.Engine.MarketState
 {
-    public class MarketContext
+    public sealed class MarketContext
     {
-        private RulesConfig _rulesConfig;
-        private RangeBacktestData _rangeBacktestData;
+        public MetricsConfig MetricsConfig;
+        public RangeBacktestData RangeBacktestData;
 
-        public MarketContext(RangeBacktestData data, RulesConfig rulesConfig)
+        public MarketContext(RangeBacktestData data, MetricsConfig metricsConfig)
         {
-            _rulesConfig = rulesConfig;
-            _rangeBacktestData = data;
+            MetricsConfig = metricsConfig;
+            RangeBacktestData = data;
         }
 
 
@@ -20,26 +20,7 @@ namespace GrindBotAPI.Engine.MarketState
 
 
 
-        public void BuildSMABuy(EngineCandle engineCandle)
-        {
-            if (_rulesConfig.SmaConfig.smaBuySetup != null)
-            {
-                var smaInterval = _rulesConfig.SmaConfig.smaBuySetup.Interval;
-                var smaTf = Timeframe.Parse(smaInterval);
-                var baseTf = Timeframe.Parse(_rangeBacktestData.Interval);
-                if ((int)smaTf % (int)baseTf == 0)
-                {
+        
 
-                }
-            }
-
-
-
-
-            if (_rulesConfig.SmaConfig.smaSellSetup != null)
-            {
-
-            }
-        }
     }
 }

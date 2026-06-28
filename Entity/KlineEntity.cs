@@ -1,4 +1,4 @@
-namespace GrindBotAPI.Entity
+namespace BacktestingEngine.Entity
 {
     public class KlineEntity
     {

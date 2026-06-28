@@ -1,7 +1,7 @@
 using Microsoft.Extensions.Logging;
-using GrindBotAPI.Engine.Core;
+using BacktestingEngine.Engine.Core;
 
-namespace GrindBotAPI.Logging;
+namespace BacktestingEngine.Logging;
 
 public static class LoggerExtensions
 {

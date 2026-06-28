@@ -1,4 +1,4 @@
-namespace GrindBotAPI.Engine
+namespace BacktestingEngine.Engine
 {
     public enum KlineInterval
     {

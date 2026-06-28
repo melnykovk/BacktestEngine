@@ -1,0 +1,6 @@
+@BacktestingEngine_HostAddress = http://localhost:5269
+
+GET {{BacktestingEngine_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

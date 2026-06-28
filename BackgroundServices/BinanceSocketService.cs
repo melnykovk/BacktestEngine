@@ -5,9 +5,9 @@ using Binance.Net.Clients;
 using Binance.Net.Enums;
 using Binance.Net.Objects.Models.Spot.Socket;
 using Microsoft.AspNetCore.SignalR;
-using GrindBotAPI.DTO;
+using BacktestingEngine.DTO;
 
-namespace GrindBotAPI.BackgroundServices
+namespace BacktestingEngine.BackgroundServices
 {
     public class BinanceSocketService : BackgroundService
     {

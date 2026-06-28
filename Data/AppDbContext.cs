@@ -1,7 +1,7 @@
-using GrindBotAPI.Entity;
+using BacktestingEngine.Entity;
 using Microsoft.EntityFrameworkCore;
 
-namespace GrindBotAPI.Data
+namespace BacktestingEngine.Data
 {
     public class AppDbContext : DbContext
     {

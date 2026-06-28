@@ -1,9 +1,9 @@
-using GrindBotAPI.DTO;
-using GrindBotAPI.Helpers;
-using GrindBotAPI.Engine;
-using GrindBotAPI.Entity;
+using BacktestingEngine.DTO;
+using BacktestingEngine.Helpers;
+using BacktestingEngine.Engine;
+using BacktestingEngine.Entity;
 
-namespace GrindBotAPI.Services
+namespace BacktestingEngine.Services
 {
     public interface IKlinesUploadFromDbService
     {

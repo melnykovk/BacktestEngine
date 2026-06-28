@@ -1,9 +1,9 @@
 using Binance.Net.Interfaces;
-using GrindBotAPI.DTO;
-using GrindBotAPI.Entity;
+using BacktestingEngine.DTO;
+using BacktestingEngine.Entity;
 using Microsoft.AspNetCore.SignalR;
 
-namespace GrindBotAPI.DTO
+namespace BacktestingEngine.DTO
 {
     public record struct EngineCandle(
      long OpenTime,

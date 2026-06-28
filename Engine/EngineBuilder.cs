@@ -1,11 +1,11 @@
-using GrindBotAPI.Engine.Core;
-using GrindBotAPI.Engine.Grid;
-using GrindBotAPI.Services;
-using GrindBotAPI.Logging;
-using GrindBotAPI.DTO;
+using BacktestingEngine.Engine.Core;
+using BacktestingEngine.Engine.Grid;
+using BacktestingEngine.Services;
+using BacktestingEngine.Logging;
+using BacktestingEngine.DTO;
 using System.Diagnostics;
 
-namespace GrindBotAPI.Engine
+namespace BacktestingEngine.Engine
 {
     public class EngineBuilder
     {

@@ -1,7 +1,7 @@
-using GrindBotAPI.DTO;
-using GrindBotAPI.Engine.Grid;
+using BacktestingEngine.DTO;
+using BacktestingEngine.Engine.Grid;
 
-namespace GrindBotAPI.Engine.Core
+namespace BacktestingEngine.Engine.Core
 {
     public class StatisticsCollector
     {

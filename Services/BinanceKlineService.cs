@@ -1,9 +1,9 @@
-using GrindBotAPI.Data;
-using GrindBotAPI.Entity;
-using GrindBotAPI.Helpers;
+using BacktestingEngine.Data;
+using BacktestingEngine.Entity;
+using BacktestingEngine.Helpers;
 using Microsoft.EntityFrameworkCore;
-using GrindBotAPI.DTO;
-namespace GrindBotAPI.Services
+using BacktestingEngine.DTO;
+namespace BacktestingEngine.Services
 {
     // Interface for KlineService to allow for easier testing and separation of concerns
     public interface IBinanceKlineService

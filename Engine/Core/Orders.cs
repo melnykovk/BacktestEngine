@@ -1,4 +1,4 @@
-namespace GrindBotAPI.Engine.Core;
+namespace BacktestingEngine.Engine.Core;
 
 public enum Side { Buy, Sell }
 public enum PairState { BuyActive, SellActive }

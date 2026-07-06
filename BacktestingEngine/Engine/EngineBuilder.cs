@@ -26,8 +26,6 @@ namespace BacktestingEngine.Engine
             var strat = new GridStrategy(request.GridConfig, candles[0].Open);
             var statistics = new StatisticsCollector(request);
 
-
-
             var cfg = strat.Build();
             var orderManager = new OrderManager(cfg);
             var sw = Stopwatch.StartNew();

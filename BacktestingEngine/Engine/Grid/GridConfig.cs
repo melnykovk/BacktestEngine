@@ -7,9 +7,9 @@ namespace BacktestingEngine.Engine.Grid
 {
     public class GridConfig
     {
-        public int LevelsPerSide { get; set; }  // e.g. 10 levels above and 10 levels below the center price
-        public decimal Step { get; set; } // e.g. 0.001m = 0.1%
-        public decimal OrderSizeQuote { get; set; } // in quote currency, e.g. USDT
+        public int LevelsPerSide { get; set; }                  // e.g. 10 levels above and 10 levels below the center price
+        public decimal Step { get; set; }                       // e.g. 0.001m = 0.1%
+        public decimal OrderSizeQuote { get; set; }             // in quote currency, e.g. USDT
 
         public GridConfig(int levelsPerSide, decimal step, decimal orderSizeQuote)
         {
@@ -39,7 +39,7 @@ namespace BacktestingEngine.Engine.Grid
         {
             _levels.Clear();
 
-            var buy = centerPrice;     // building prices around the center price
+            var buy = centerPrice;                              // building prices around the center price
 
             var downMul = 1m - _cfg.Step;       // buy
             var upMul = 1m + _cfg.Step;         // sell

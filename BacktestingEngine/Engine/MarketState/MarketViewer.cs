@@ -14,13 +14,5 @@ namespace BacktestingEngine.Engine.MarketState
             MetricsConfig = metricsConfig;
             RangeBacktestData = data;
         }
-
-
-
-
-
-
-        
-
     }
 }

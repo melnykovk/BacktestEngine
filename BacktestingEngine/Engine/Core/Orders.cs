@@ -42,8 +42,8 @@ public sealed class OrderLimit
     public Guid Id { get; set; }
     public Side Side { get; set; }
     public OrderStatus Status { get; set; }
-    public decimal Price { get; set; }          // btc price in usdt
-    public decimal QuoteAmount { get; set; }    // fix price in USDT
+    public decimal Price { get; set; }          // Btc price in usdt
+    public decimal QuoteAmount { get; set; }    // Fix price in USDT
     public decimal? BaseAmount { get; set; }
     public OrderLimit(Guid id, Side side, OrderStatus status, decimal price, decimal quoteAmount, decimal? baseAmount)
     {

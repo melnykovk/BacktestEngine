@@ -39,7 +39,7 @@ namespace BacktestingEngine.Engine.Grid
         {
             _levels.Clear();
 
-            var buy = centerPrice;                              // building prices around the center price
+            var buy = centerPrice;              // building prices around the center price
 
             var downMul = 1m - _cfg.Step;       // buy
             var upMul = 1m + _cfg.Step;         // sell

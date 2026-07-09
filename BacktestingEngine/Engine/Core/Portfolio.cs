@@ -4,7 +4,6 @@ public sealed class Portfolio
 {
     public decimal QuoteBalance { get; private set; } // USDT
     public decimal BaseBalance { get; private set; }  // BTC
-    // public decimal FeesPaidQuote { get; private set; } // fees, in USDT
 
     public Portfolio(decimal startingQuote)
     {

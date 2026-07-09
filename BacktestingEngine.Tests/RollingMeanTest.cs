@@ -4,43 +4,41 @@ using BacktestingEngine.Engine.MarketState;
 public class RollingMeanTests
 {
     [Fact]
-    public void Returns_Null_Until_Buffer_Is_Full()
+    public void CalcAveragePerPriod()
     {
-        var sma = new RollingMean(3);         
-
-        Assert.Null(sma.Add(10m));             
-        Assert.Null(sma.Add(20m));             
-        Assert.NotNull(sma.Add(30m));          
+        var rm = new RollingMean(4);
+        rm.Add(60000m);
+        rm.Add(61000m);
+        rm.Add(62000m);
+        var result = rm.Add(63000m);
+        Assert.Equal(61500m, result);
     }
 
     [Fact]
-    public void Computes_Correct_Average_When_Full()
+    public void NullReturnCheck()
     {
-        var sma = new RollingMean(3);
-
-        sma.Add(10m);
-        sma.Add(20m);
-        var result = sma.Add(30m);
-
-        Assert.Equal(20m, result);
+        var rm = new RollingMean(4);
+        rm.Add(60000m);
+        rm.Add(61000m);
+        var result = rm.Add(62000m);
+        Assert.Null(result);
     }
 
     [Fact]
-    public void Slides_Window_Dropping_Oldest()
-    {
-        var sma = new RollingMean(3);
-
-        sma.Add(10m);
-        sma.Add(20m);
-        sma.Add(30m);
-        var result = sma.Add(40m);
-
-        Assert.Equal(30m, result);
-    }
-
-    [Fact]
-    public void Throws_On_Invalid_Period()
+    public void InvalidValueExceptionCheck()
     {
         Assert.Throws<ArgumentOutOfRangeException>(() => new RollingMean(0));
+    }
+
+    [Fact]
+    public void RollingCheck()
+    {
+        var rm = new RollingMean(3);
+        rm.Add(1m);
+        rm.Add(2m);
+        rm.Add(3m);
+        rm.Add(4m);
+        var result = rm.Add(5m);
+        Assert.Equal(4m, result);
     }
 }

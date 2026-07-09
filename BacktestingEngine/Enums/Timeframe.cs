@@ -47,10 +47,8 @@ namespace BacktestingEngine.Engine
         {
             if ((int)metricInterval < (int)baseInterval)
                 throw new InvalidOperationException("Metric interval cannot be smaller than base interval.");
-
             if((int)metricInterval % (int)baseInterval != 0)
                 throw new InvalidOperationException("Metric interval must be divisible by base interval.");
-
             return (int)metricInterval / (int)baseInterval;
         }
     }
@@ -99,4 +97,3 @@ namespace BacktestingEngine.Engine
         }
     }
 }
-

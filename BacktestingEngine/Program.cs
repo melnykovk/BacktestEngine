@@ -1,5 +1,4 @@
 using BacktestingEngine.Data;
-using BacktestingEngine.BackgroundServices;
 using BacktestingEngine.DTO;
 using Microsoft.EntityFrameworkCore;
 using BacktestingEngine.Engine;
@@ -23,14 +22,8 @@ builder.Services.AddOpenApi();
 builder.Services.AddControllers();
 builder.Services.AddControllers()
     .AddNewtonsoftJson();
-builder.Services.AddSingleton<TradeStore>();
-builder.Services.AddSingleton<BinanceSocketService>(); // singleton для доступа к экземпляру
-builder.Services.AddHostedService(provider => provider.GetRequiredService<BinanceSocketService>());
-
-builder.Services.AddSignalR();
 
 var app = builder.Build();
-app.MapHub<TradesHub>("/tradesHub");
 app.MapGet("/configmanager", async context =>
 {
     context.Response.ContentType = "text/html; charset=utf-8";

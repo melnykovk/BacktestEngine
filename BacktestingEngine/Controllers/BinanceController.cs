@@ -1,4 +1,3 @@
-using BacktestingEngine.BackgroundServices;
 using BacktestingEngine.DTO;
 using BacktestingEngine.Data;
 using BacktestingEngine.Entity;

@@ -77,7 +77,7 @@ namespace BacktestingEngine.Engine.Core
         public decimal _maxQuoteRangePerCandlePct;
 
         // Other statistics
-        private int _timeUnderWater;  // max time between low and high portfolio equity;
+        // private int _timeUnderWater;  // max time between low and high portfolio equity;
 
 
         public StatisticsCollector(BacktestRunRequest request)
@@ -184,7 +184,7 @@ namespace BacktestingEngine.Engine.Core
             {
                 _feesHighestQuote = fill.FeeQuote;
             }
-
+            _feesToGrossProfitRatioPct = (_profitQuote != 0 ? _totalFeesQuote / _profitQuote : 0) * 100m;
         }
         public void UpdateMaxCapitalInAssetPct()
         {
@@ -299,7 +299,6 @@ namespace BacktestingEngine.Engine.Core
             {
                 _profitPerCyclePct = _profitPct / _closedCyclesCount;
             }
-
         }
         public void UpdateMaxPriceRangeBetweenCandles(EngineCandle engineCandle)
         {
@@ -345,7 +344,7 @@ namespace BacktestingEngine.Engine.Core
                 TotalFeesQuote = _totalFeesQuote,
                 FeesLowestQuote = _feesLowestQuote,
                 FeesHighestQuote = _feesHighestQuote,
-                FeesToGrossProfitRatioPct = _feesToGrossProfitRatioPct + (_profitQuote != 0 ? _totalFeesQuote / _profitQuote : 0) * 100m,
+                FeesToGrossProfitRatioPct = _feesToGrossProfitRatioPct,
 
                 // Risk*
                 MaxDrawdown = _maxDrawdown,

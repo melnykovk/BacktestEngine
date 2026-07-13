@@ -42,8 +42,8 @@ public sealed class OrderLimit
     public Guid Id { get; set; }
     public Side Side { get; set; }
     public OrderStatus Status { get; set; }
-    public decimal Price { get; set; }          // Btc price in usdt
-    public decimal QuoteAmount { get; set; }    // Fix price in USDT
+    public decimal Price { get; set; }              // Btc price in usdt
+    public decimal QuoteAmount { get; set; }        // Fix price in USDT
     public decimal? BaseAmount { get; set; }
     public OrderLimit(Guid id, Side side, OrderStatus status, decimal price, decimal quoteAmount, decimal? baseAmount)
     {
@@ -60,11 +60,11 @@ public sealed record Fill(
     int PairId,
     Guid OrderId,
     Side Side,
-    decimal BaseQty,     // btc amount,   e.g. 0.001 btc
-    decimal Price,       // btc price in usdt,    e.g. 70000
-    decimal FeeQuote,    // fee in quote currency USDT, e.g. 0.01%
-    decimal QuoteAmount, // quote amount in USDT, e.g. 50
-    long TradeTime = 0   // trade time counted on candle close time, for simplicity
+    decimal BaseQty,            // Btc amount,   e.g. 0.001 btc
+    decimal Price,              // Btc price in usdt,    e.g. 70000
+    decimal FeeQuote,           // Fee in quote currency USDT, e.g. 0.01%
+    decimal QuoteAmount,        // Quote amount in USDT, e.g. 50
+    long TradeTime = 0          // Trade time counted on candle close time, for simplicity
 );
 
 public sealed record MarketEvent(

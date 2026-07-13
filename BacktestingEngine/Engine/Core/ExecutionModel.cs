@@ -21,10 +21,9 @@ public sealed class ExecutionModel
         var activeOrder = pair.GetActiveOrder();
 
         // Check if the active order price was touched by the candle
-        var touched =
-            activeOrder.Side == Side.Buy
-                ? engineCandle.Low <= activeOrder.Price
-                : engineCandle.High >= activeOrder.Price;
+        var touched = activeOrder.Side == Side.Buy
+            ? engineCandle.Low <= activeOrder.Price
+            : engineCandle.High >= activeOrder.Price;
 
         if (!touched) return false;
 

@@ -8,3 +8,5 @@ obj/
 *.cache
 appsettings.Development.json
 appsettings.json
+*.rar
+*.zip

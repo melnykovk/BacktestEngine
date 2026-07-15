@@ -1,14 +1,14 @@
-BacktestEngine
+# BacktestEngine
 
 Event-driven backtesting engine for grid trading strategies in C#/.NET, with conservative intrabar fill modelling and no-lookahead guarantees.
 
-Overview
+## Overview
 
 Simulates grid trading strategies against historical market data candle-by-candle. Data is fetched from Binance and stored locally, then backtested over any symbol, timeframe, and date range. Every decision is computed on candle close using only past data — no-lookahead is enforced structurally, not by discipline.
 
 This is a research/simulation tool, not a live trading system: it prioritizes correctness and reproducibility, and documents its simplifying assumptions explicitly.
 
-Key design decisions
+## Key design decisions
 
 
 Event-driven, not vectorized — each candle is a discrete event processed in strict chronological order. No-lookahead becomes a structural property: a candle physically cannot see a future candle.
@@ -18,7 +18,7 @@ Separated data models — distinct types for the runtime candle (EngineCandle, a
 Layered strategy model (in progress) — a Metrics → Rules → Policy hierarchy separates computing signals from reacting to them from managing decisions (a position/mode state machine). Seams follow axes of change, so adding a rule doesn't touch the infrastructure.
 
 
-Architecture
+## Architecture
 
 ### Components
 
@@ -34,11 +34,11 @@ Architecture
 
 Data flows one way; lower layers know nothing about higher ones. RollingMean takes a decimal and knows nothing about candles; the aggregator collapses base candles into a metric candle and knows nothing about SMA; execution knows nothing about strategy logic. Each layer is testable in isolation.
 
-Tech stack
+## Tech stack
 
 .NET 10 · ASP.NET Core (Web API + web UI) · PostgreSQL via EF Core (code-first, Npgsql) · Binance.Net (REST + websocket) · SignalR · xUnit
 
-Features
+## Features
 
 Working
 
@@ -49,14 +49,14 @@ Configurable per run: fee rate, order size, starting balance, grid step.
 Web UI for dataset management and running backtests, with real-time updates.
 
 
-In progress
+## In progress
 
 
 Metrics → Rules → Policy layer for expressing strategy behaviour.
 SMA indicators with multi-timeframe aggregation.
 
 
-Getting started
+## Getting started
 
 Prerequisites: .NET 10 SDK, PostgreSQL.
 
@@ -67,7 +67,7 @@ Run: dotnet run
 Open the web UI in a browser.
 
 
-Testing
+## Testing
 
 Unit tests (xUnit) cover the correctness-critical paths:
 
@@ -81,7 +81,7 @@ ExecutionModel — intrabar fill on both sides (buy on low-touch, sell on high-t
 
 bashdotnet test
 
-Assumptions & scope
+## Assumptions & scope
 
 Deliberate simplifications of a simulation engine:
 
@@ -91,7 +91,7 @@ Execution price equals order price; actual execution price can't be reconstructe
 Data is assumed gap-free (validated on ingestion), so higher-timeframe aggregation uses candle counts, not wall-clock boundaries.
 
 
-Roadmap
+## Roadmap
 
 v2
 

@@ -31,7 +31,7 @@ Layered strategy model (in progress) — a Metrics → Rules → Policy hierarch
 - **Statistics Collector** - aggregates backtest results.
 
 <div align="center">
-  <img src="docs/Engine%20architecture.svg" width="700">
+  <img src="docs/Engine%20architecture.svg" width="400">
 </div>
 
 Data flows one way; lower layers know nothing about higher ones. RollingMean takes a decimal and knows nothing about candles; the aggregator collapses base candles into a metric candle and knows nothing about SMA; execution knows nothing about strategy logic. Each layer is testable in isolation.

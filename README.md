@@ -30,7 +30,9 @@ Layered strategy model (in progress) — a Metrics → Rules → Policy hierarch
 - **Portfolio** - tracks positions, balance and state.
 - **Statistics Collector** - aggregates backtest results.
 
-![Architecture](docs/Engine%20architecture.svg)
+<p align="center">
+  <img src="docs/engine-architecture.png" width="700">
+</p>
 
 Data flows one way; lower layers know nothing about higher ones. RollingMean takes a decimal and knows nothing about candles; the aggregator collapses base candles into a metric candle and knows nothing about SMA; execution knows nothing about strategy logic. Each layer is testable in isolation.
 

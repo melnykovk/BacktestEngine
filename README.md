@@ -51,7 +51,7 @@ Data flows one way; lower layers know nothing about higher ones. RollingMean tak
 - Web UI for dataset management and running backtests, with real-time updates.
 
 
-## In progress
+**In progress**
 
 
 - Metrics → Rules → Policy layer for expressing strategy behaviour.

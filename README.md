@@ -93,15 +93,15 @@ Deliberate simplifications of a simulation engine:
 
 ## Roadmap
 
-v2
+**v2**
 
 
-Complete the Metrics → Rules → Policy layer; multiple indicators (EMA, RSI, …), each independently parameterized, sharing a reusable rolling-window primitive.
-Distributed parameter sweeps. With several parameterized indicators plus fine-grained timeframes (down to 1s), the parameter space grows combinatorially and individual runs get heavier. Since each run is an independent, stateless unit (candles in, stats out), the workload is embarrassingly parallel — designed to fan out across cloud workers (AWS/Azure) over a shared dataset store, so large sweeps run in parallel rather than sequentially.
+- Complete the Metrics → Rules → Policy layer; multiple indicators (EMA, RSI, …), each independently parameterized, sharing a reusable rolling-window primitive.
+- Distributed parameter sweeps. With several parameterized indicators plus fine-grained timeframes (down to 1s), the parameter space grows combinatorially and individual runs get heavier. Since each run is an independent, stateless unit (candles in, stats out), the workload is embarrassingly parallel — designed to fan out across cloud workers (AWS/Azure) over a shared dataset store, so large sweeps run in parallel rather than sequentially.
 
 
-v3
+**v3**
 
 
-Hedging / short-side rules and capital allocation across sub-strategies.
-Richer statistics and reporting.
+- Hedging / short-side rules and capital allocation across sub-strategies.
+- Richer statistics and reporting.

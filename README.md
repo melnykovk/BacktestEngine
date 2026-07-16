@@ -81,8 +81,6 @@ Unit tests (xUnit) cover the correctness-critical paths:
 - **ExecutionModel** — intrabar fill on both sides (buy on low-touch, sell on high-touch, and the negative cases), plus the guard against selling with no open position.
 
 
-bashdotnet test
-
 ## Assumptions & scope
 
 Deliberate simplifications of a simulation engine:

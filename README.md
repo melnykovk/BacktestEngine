@@ -80,6 +80,10 @@ Unit tests (xUnit) cover the correctness-critical paths:
 - **Portfolio** — starting balance and invariants.
 - **ExecutionModel** — intrabar fill on both sides (buy on low-touch, sell on high-touch, and the negative cases), plus the guard against selling with no open position.
 
+```bash
+dotnet test
+```
+
 
 ## Assumptions & scope
 

@@ -63,10 +63,10 @@ Data flows one way; lower layers know nothing about higher ones. RollingMean tak
 Prerequisites: .NET 10 SDK, PostgreSQL.
 
 
-Set the connection string in appsettings.json (ConnectionStrings:DefaultConnection).
-Apply migrations: dotnet ef database update
-Run: dotnet run
-Open the web UI in a browser.
+- Set the connection string in appsettings.json (ConnectionStrings:DefaultConnection).
+- Apply migrations: dotnet ef database update
+- Run: dotnet run
+- Open the web UI in a browser.
 
 
 ## Testing
@@ -88,9 +88,9 @@ bashdotnet test
 Deliberate simplifications of a simulation engine:
 
 
-No partial fills, no slippage — fills are full, at the order price.
-Execution price equals order price; actual execution price can't be reconstructed from OHLC (no order book / tick data) and would come from the exchange in a live system.
-Data is assumed gap-free (validated on ingestion), so higher-timeframe aggregation uses candle counts, not wall-clock boundaries.
+- No partial fills, no slippage — fills are full, at the order price.
+- Execution price equals order price; actual execution price can't be reconstructed from OHLC (no order book / tick data) and would come from the exchange in a live system.
+- Data is assumed gap-free (validated on ingestion), so higher-timeframe aggregation uses candle counts, not wall-clock boundaries.
 
 
 ## Roadmap

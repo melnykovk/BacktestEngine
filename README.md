@@ -42,20 +42,20 @@ Data flows one way; lower layers know nothing about higher ones. RollingMean tak
 
 ## Features
 
-Working
+**Working**
 
 
-Ingest OHLCV candles from Binance into PostgreSQL for any symbol / timeframe / range; add or remove datasets on demand.
-Backtest a grid strategy over any stored dataset, by timeframe and date range.
-Configurable per run: fee rate, order size, starting balance, grid step.
-Web UI for dataset management and running backtests, with real-time updates.
+- Ingest OHLCV candles from Binance into PostgreSQL for any symbol / timeframe / range; add or remove datasets on demand.
+- Backtest a grid strategy over any stored dataset, by timeframe and date range.
+- Configurable per run: fee rate, order size, starting balance, grid step.
+- Web UI for dataset management and running backtests, with real-time updates.
 
 
 ## In progress
 
 
-Metrics → Rules → Policy layer for expressing strategy behaviour.
-SMA indicators with multi-timeframe aggregation.
+- Metrics → Rules → Policy layer for expressing strategy behaviour.
+- SMA indicators with multi-timeframe aggregation.
 
 
 ## Getting started

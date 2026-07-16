@@ -11,11 +11,11 @@ This is a research/simulation tool, not a live trading system: it prioritizes co
 ## Key design decisions
 
 
-Event-driven, not vectorized — each candle is a discrete event processed in strict chronological order. No-lookahead becomes a structural property: a candle physically cannot see a future candle.
-Conservative intrabar fills — limit orders fill on intrabar touch (Low <= price for buys, High >= price for sells), not on close. Fills execute at the order price — a never-optimistic assumption for limit orders.
-Timeframe decoupling — indicator timeframes are independent of the engine timeframe. Intervals are encoded as seconds, reducing "base candles per metric candle" to arithmetic (target / base) with a divisibility check. Any timeframe combination is configured, not coded.
-Separated data models — distinct types for the runtime candle (EngineCandle, an immutable record struct on the hot path), the stored entity, and a denormalized dataset summary holding precomputed aggregates — so listing datasets never runs COUNT over millions of rows.
-Layered strategy model (in progress) — a Metrics → Rules → Policy hierarchy separates computing signals from reacting to them from managing decisions (a position/mode state machine). Seams follow axes of change, so adding a rule doesn't touch the infrastructure.
+- **Event-driven, not vectorized** — each candle is a discrete event processed in strict chronological order. No-lookahead becomes a structural property: a candle physically cannot see a future candle.
+- **Conservative intrabar fills** — limit orders fill on intrabar touch (Low <= price for buys, High >= price for sells), not on close. Fills execute at the order price — a never-optimistic assumption for limit orders.
+- **Timeframe decoupling** — indicator timeframes are independent of the engine timeframe. Intervals are encoded as seconds, reducing "base candles per metric candle" to arithmetic (target / base) with a divisibility check. Any timeframe combination is configured, not coded.
+- **Separated data models** — distinct types for the runtime candle (EngineCandle, an immutable record struct on the hot path), the stored entity, and a denormalized dataset summary holding precomputed aggregates — so listing datasets never runs COUNT over millions of rows.
+- **Layered strategy model (in progress)** — a Metrics → Rules → Policy hierarchy separates computing signals from reacting to them from managing decisions (a position/mode state machine). Seams follow axes of change, so adding a rule doesn't touch the infrastructure.
 
 
 ## Architecture

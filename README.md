@@ -74,11 +74,11 @@ Open the web UI in a browser.
 Unit tests (xUnit) cover the correctness-critical paths:
 
 
-RollingMean — average correctness, null before the window fills, window sliding, invalid-period guard.
-Timeframe — base-candle ratio across intervals, divisibility and ordering guards.
-GridStrategy — geometric level construction (buy/sell prices).
-Portfolio — starting balance and invariants.
-ExecutionModel — intrabar fill on both sides (buy on low-touch, sell on high-touch, and the negative cases), plus the guard against selling with no open position.
+- **RollingMean** — average correctness, null before the window fills, window sliding, invalid-period guard.
+- **Timeframe** — base-candle ratio across intervals, divisibility and ordering guards.
+- **GridStrategy** — geometric level construction (buy/sell prices).
+- **Portfolio** — starting balance and invariants.
+- **ExecutionModel** — intrabar fill on both sides (buy on low-touch, sell on high-touch, and the negative cases), plus the guard against selling with no open position.
 
 
 bashdotnet test

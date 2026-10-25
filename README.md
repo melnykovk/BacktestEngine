@@ -43,7 +43,6 @@ Browse stored market data by symbol and timeframe, inspect dataset coverage, and
 - **Engine** - core execution environment responsible for running backtests.
 - **Idea** - defines a trading hypothesis and combines strategy configuration.
 - **Strategy** - generates trading decisions.
-- **Decision System** - evaluates market conditions using metrics, rules and policies.
 - **Execution Model** - simulates order execution.
 - **Portfolio** - tracks positions, balance and state.
 - **Statistics Collector** - aggregates backtest results.
@@ -62,8 +61,8 @@ Data flows one way; lower layers know nothing about higher ones. RollingMean tak
 
 **Working**
 
-- Metric analyze layer
-- Desicion system 
+- Metric analysis layer
+- Decision system 
 - Adding drag-and-drop support for datasets in .zip/.rar format from Binance (1s interval)
 
 **In progress**

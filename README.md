@@ -8,6 +8,20 @@ Simulates grid trading strategies against historical market data candle-by-candl
 
 This is a research/simulation tool, not a live trading system: it prioritizes correctness and reproducibility, and documents its simplifying assumptions explicitly.
 
+## Web interface
+
+### Backtest configuration and execution
+
+Configure grid parameters, select a historical dataset and date range, and run backtests through the web interface.
+
+![Backtest configuration and execution](docs/screenshots/backtestConfig.png)
+
+### Historical dataset management
+
+Browse stored market data by symbol and timeframe, inspect dataset coverage, and manage historical datasets.
+
+![Historical dataset management](docs/screenshots/datasetInformation.png)
+
 ## Key design decisions
 
 

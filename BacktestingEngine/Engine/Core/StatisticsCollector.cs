@@ -99,7 +99,7 @@ namespace BacktestingEngine.Engine.Core
         }
         public void GetStatOnCandle(
         Portfolio portfolio,
-        EngineCandle engineCandle,
+        in EngineCandle engineCandle,
         MarketEvent? marketEvent)
         {
             // All stats are collected from the portfolio/strategy state

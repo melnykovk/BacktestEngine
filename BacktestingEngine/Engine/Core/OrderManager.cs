@@ -4,6 +4,7 @@ namespace BacktestingEngine.Engine.Core;
 
 public sealed class OrderManager
 {
+
     private readonly List<OrderLimit> _orders = new();
     private readonly List<PairOrder> _pairOrders = new();
     private readonly GridMode _grid;
@@ -31,6 +32,7 @@ public sealed class OrderManager
 
     public OrderLimit? CanApplyOrder(Fill fill)
     {
+
         for (int i = 0; i < _pairOrders.Count; i++)
         {
             var pair = _pairOrders[i];

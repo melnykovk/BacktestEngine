@@ -10,3 +10,13 @@ appsettings.Development.json
 appsettings.json
 *.rar
 *.zip
+
+# Client / React
+Client/node_modules/
+Client/dist/
+Client/.vite/
+
+# Environment variables and secrets
+Client/.env
+Client/.env.*
+!Client/.env.example

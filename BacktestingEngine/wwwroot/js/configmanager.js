@@ -3,9 +3,21 @@ const resultBlock = document.getElementById("result");
 const strategyContainer = document.getElementById("strategy-params");
 const rulesContainer = document.getElementById("rules-params");
 const paramInputs = document.querySelectorAll(".param-block input");
+
+let uploadAbortController = null;
+let isUploading = false;
+
 startBtn.addEventListener("click", async () => {
     try {
+        if (isUploading) {
+            cancelUpload();
+            return;
+        }
+        isUploading = true;
+        uploadAbortController = new AbortController();
 
+        setUploadButtonLoading(true);
+        
         const request = getDataConfig();
 
         resultBlock.textContent = "Loading...";
@@ -15,13 +27,14 @@ startBtn.addEventListener("click", async () => {
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify(request)
+            body: JSON.stringify(request),
+            signal: uploadAbortController.signal
         });
 
         if (!response.ok) {
             const errorText = await response.text();
-            resultBlock.textContent = `HTTP ${response.status}\n${errorText}`;
-            return;
+            throw new Error(`HTTP ${response.status}: ${errorText}`);
+
         }
 
         const data = await response.json();
@@ -31,9 +44,48 @@ startBtn.addEventListener("click", async () => {
             JSON.stringify(data, null, 2);
     }
     catch (error) {
+        if(error.name === "AbortError") {
+            resultBlock.textContent = "Backtest cancelled by user.";
+            return;
+        }
+
         resultBlock.textContent = `Error: ${error.message}`;
     }
+    finally {
+        isUploading = false;
+        uploadAbortController = null;
+        setUploadButtonLoading(false);
+    }
 });
+
+function cancelUpload() {
+    if (uploadAbortController) {
+        uploadAbortController.abort();
+    }
+}
+
+function handleUploadButton() {
+    if (isUploading) {
+        cancelUpload();
+    } else {
+        startUpload();
+    }
+}
+function setUploadButtonLoading(isLoading) {
+    const spinner = document.getElementById("loadSpinner");
+    const button = document.getElementById("startBacktest");
+
+    if (spinner) {
+        spinner.hidden = !isLoading;
+    }
+
+
+    if (button) {
+        button.textContent = isLoading ? "Cancel" : "Start Backtest";
+        button.classList.toggle("is-loading", isLoading);
+    }
+}
+
 
 document.addEventListener('DOMContentLoaded', function () {
     createParamsConfig();

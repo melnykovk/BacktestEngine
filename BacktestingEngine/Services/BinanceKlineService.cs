@@ -3,12 +3,16 @@ using BacktestingEngine.Entity;
 using BacktestingEngine.Helpers;
 using Microsoft.EntityFrameworkCore;
 using BacktestingEngine.DTO;
+using System.Data.Common;
+
+
 namespace BacktestingEngine.Services
 {
     // Interface for KlineService to allow for easier testing and separation of concerns
     public interface IBinanceKlineService
     {
-        Task<DbUploadKlinesResponseDto> FetchAndSaveKlinesFromDateAsync(DbUploadKlinesRequestDto request);
+        Task<DbUploadKlinesResponseDto> FetchAndSaveKlinesAsync(DbUploadKlinesRequestDto request, CancellationToken cancellationToken);
+        Task<DbDatasetDeleteResponseDto> DeleteKlinesAsync(DbDatasetDeleteRequestDto request, CancellationToken cancellationToken);
     }
 
     // Service responsible for fetching klines from Binance API and saving to database
@@ -18,20 +22,26 @@ namespace BacktestingEngine.Services
         private readonly HttpClient _httpClient;
         private readonly AppDbContext _dbContext;
         private readonly ILogger<BinanceKlineService> _logger;
+        private readonly ICandleRepository _candleRepository;
         private const string BinanceApiUrl = "https://api.binance.com/api/v3";
-        public BinanceKlineService(HttpClient httpClient, AppDbContext dbContext, ILogger<BinanceKlineService> logger)
+        public BinanceKlineService(HttpClient httpClient, AppDbContext dbContext, ILogger<BinanceKlineService> logger, ICandleRepository candleRepository)
         {
             _httpClient = httpClient;
             _dbContext = dbContext;
             _logger = logger;
+            _candleRepository = candleRepository;
+
         }
 
 
         // Private function to fetch klines from Binance API
-        private async Task<List<decimal[]>> FetchFromBinanceAsync(string symbol, string interval, int limit, long? startTime = null)
+        private async Task<List<decimal[]>> GetKlinesFromBinanceAsync(
+            string symbol, 
+            string interval, 
+            int limit, long? 
+            startTime = null)
         {
             var url = $"{BinanceApiUrl}/klines?symbol={symbol}&interval={interval}&limit={limit}";
-            _logger.LogDebug($"Binance API URL: {url}");
 
             if (startTime.HasValue)
             {
@@ -42,10 +52,10 @@ namespace BacktestingEngine.Services
             {
                 // Send GET request to Binance API
                 var response = await _httpClient.GetAsync(url);
-
                 response.EnsureSuccessStatusCode();
                 // Read and parse the response content as a list of decimal arrays
                 var klines = await response.Content.ReadFromJsonAsync<List<decimal[]>>();
+
                 return klines ?? new List<decimal[]>();
             }
             catch (Exception ex)
@@ -57,10 +67,13 @@ namespace BacktestingEngine.Services
 
 
         // Private function to save klines to database
-        private async Task<DbUploadKlinesResponseDto> SaveKlinesToDatabaseAsync(List<decimal[]> binanceKlines, DbUploadKlinesRequestDto request)
+        private async Task<DbUploadKlinesResponseDto> SaveKlinesToDatabaseAsync(
+            List<decimal[]> binanceKlines,
+            DbUploadKlinesRequestDto request, 
+            CancellationToken _token)
         {
             // Convert Binance klines to KlineEntity objects for database storage
-            var newKlines = new List<KlineEntity>();
+            var newKlines = new List<KlineEntity>(binanceKlines.Count);
 
             foreach (var kline in binanceKlines)
             {
@@ -84,58 +97,100 @@ namespace BacktestingEngine.Services
                 newKlines.Add(entity);
             }
 
-            // Extract keys from new klines to check for existing records in the database
-            var newKeys = newKlines
-            .Select(k => new { k.Symbol, k.Interval, k.OpenTimeMs })
-            .ToList();
-
+            
             // Query the database for existing klines with the same keys to avoid duplicates
             var openTimes = newKlines.Select(k => k.OpenTimeMs).ToList();
-
+            
             var existingKlines = await _dbContext.BinanceKlines
             .Where(x => x.Symbol == request.Symbol
                 && x.Interval == request.Interval
                 && openTimes.Contains(x.OpenTimeMs))
-            .ToListAsync();
-
-            var existingDict = existingKlines.ToDictionary(
-                k => new { k.Symbol, k.Interval, k.OpenTimeMs });
+            .ToDictionaryAsync(k => new { k.Symbol, k.Interval, k.OpenTimeMs }, _token);
 
             int addCount = 0;
             int updateCount = 0;
 
-            foreach (var newKline in newKlines)
+            await using var transaction =
+                await _dbContext.Database.BeginTransactionAsync(_token);
+            try
             {
-                var key = new { newKline.Symbol, newKline.Interval, newKline.OpenTimeMs };
-
-                if (existingDict.ContainsKey(key))
+                foreach (var newKline in newKlines)
                 {
-                    // Update a kline that already exists in the database with new data from Binance
-                    var existing = existingDict[key];
+                    _token.ThrowIfCancellationRequested();
+                    var key = new { newKline.Symbol, newKline.Interval, newKline.OpenTimeMs };
 
-                    existing.Open = newKline.Open;
-                    existing.High = newKline.High;
-                    existing.Low = newKline.Low;
-                    existing.Close = newKline.Close;
-                    existing.Volume = newKline.Volume;
-                    existing.CloseTimeMs = newKline.CloseTimeMs;
-                    existing.QuoteAssetVol = newKline.QuoteAssetVol;
-                    existing.TradesCount = newKline.TradesCount;
-                    existing.TakerBuyBase = newKline.TakerBuyBase;
-                    existing.TakerBuyQuote = newKline.TakerBuyQuote;
+                    if (existingKlines.ContainsKey(key))
+                    {
+                        // Update a kline that already exists in the database with new data from Binance
+                        var existing = existingKlines[key];
 
-                    _dbContext.BinanceKlines.Update(existing);
-                    updateCount++;
+                        existing.Open = newKline.Open;
+                        existing.High = newKline.High;
+                        existing.Low = newKline.Low;
+                        existing.Close = newKline.Close;
+                        existing.Volume = newKline.Volume;
+                        existing.CloseTimeMs = newKline.CloseTimeMs;
+                        existing.QuoteAssetVol = newKline.QuoteAssetVol;
+                        existing.TradesCount = newKline.TradesCount;
+                        existing.TakerBuyBase = newKline.TakerBuyBase;
+                        existing.TakerBuyQuote = newKline.TakerBuyQuote;
+
+                        _dbContext.BinanceKlines.Update(existing);
+                        updateCount++;
+                    }
+                    else
+                    {
+                        // Add a new kline to the database if it does not already exist
+                        _dbContext.BinanceKlines.Add(newKline);
+                        addCount++;
+                    }
                 }
-                else
+                await _dbContext.SaveChangesAsync(_token);
+
+                var changes = await _dbContext.BinanceKlines
+                .AsNoTracking()
+                .GroupBy(k => new { k.Symbol, k.Interval })
+                .Select(g => new KlineDatasetEntity
                 {
-                    // Add a new kline to the database if it does not already exist
-                    _dbContext.BinanceKlines.Add(newKline);
-                    addCount++;
+                    Symbol = g.Key.Symbol,
+                    Interval = g.Key.Interval,
+                    FirstOpenTimeMs = g.Min(k => k.OpenTimeMs),
+                    LastOpenTimeMs = g.Max(k => k.OpenTimeMs),
+                    CandlesCount = g.Count()
+                })
+                .ToListAsync(_token);
+
+
+
+                var existingDatasets = await _dbContext.KlineDatasets
+                    .ToDictionaryAsync(k => new { k.Symbol, k.Interval }, _token);
+
+
+
+
+                foreach(var change in changes)
+                {
+                    if(existingDatasets.TryGetValue(new { change.Symbol, change.Interval }, out var existingDataset))
+                    {
+                        existingDataset.FirstOpenTimeMs = change.FirstOpenTimeMs;
+                        existingDataset.LastOpenTimeMs = change.LastOpenTimeMs;
+                        existingDataset.CandlesCount = change.CandlesCount;
+                        _dbContext.KlineDatasets.Update(existingDataset);
+                    }
+                    else
+                    {
+                        _dbContext.KlineDatasets.Add(change);
+                    }
                 }
+                await _dbContext.SaveChangesAsync(_token);
+                await transaction.CommitAsync(_token);
             }
-
-            await _dbContext.SaveChangesAsync();
+            catch
+            {
+                await transaction.RollbackAsync();
+                throw;
+            }
+            
             var response = new DbUploadKlinesResponseDto();
             response.Symbol = request.Symbol;
             response.Interval = request.Interval;
@@ -150,9 +205,10 @@ namespace BacktestingEngine.Services
             return response;
         }
 
-
-        // Placeholder for future implementation of fetching klines from a specific date range
-        public async Task<DbUploadKlinesResponseDto> FetchAndSaveKlinesFromDateAsync(DbUploadKlinesRequestDto request)
+        // Placeholder for implementation of fetching klines from a specific date range
+        public async Task<DbUploadKlinesResponseDto> FetchAndSaveKlinesAsync(
+            DbUploadKlinesRequestDto request, 
+            CancellationToken _token)
         {
             try
             {
@@ -173,8 +229,9 @@ namespace BacktestingEngine.Services
 
                 while (currentStartTime <= endTimeMs)
                 {
+                    _token.ThrowIfCancellationRequested();
                     // Request 1000 candles by currentStartTime
-                    var batch = await FetchFromBinanceAsync(
+                    var batch = await GetKlinesFromBinanceAsync(
                         request.Symbol,
                         request.Interval,
                         1000,
@@ -187,7 +244,7 @@ namespace BacktestingEngine.Services
                     }
 
                     batchCount++;
-                    _logger.LogInformation($"Batch {batchCount}: Downloaded {batch.Count} candles");
+                    _logger.LogInformation($"Batch [{batchCount}]: Downloaded {batch.Count} candles");
 
 
                     var filteredBatch = batch
@@ -207,13 +264,13 @@ namespace BacktestingEngine.Services
                     // Начинаем со следующей свечи
                     currentStartTime = (long)batch.Last()[0] + 1;
 
-                    // Delay for API rate limiting (50ms)
-                    await Task.Delay(50);
+                    // Delay for API rate limiting (100ms)
+                    await Task.Delay(100, _token);
                 }
 
                 if (allKlines.Any())
                 {
-                    response = await SaveKlinesToDatabaseAsync(allKlines, request);
+                    response = await SaveKlinesToDatabaseAsync(allKlines, request, _token);
                     _logger.LogInformation($"Downloaded {request.Symbol} {request.Interval} from {request.StartDate:O} to {request.EndDate:O}");
                     _logger.LogInformation($"In ms: {startTimeMs} to {endTimeMs}");
                     _logger.LogInformation($"Added {allKlines.Count} klines to database for {request.Symbol} with interval {request.Interval}");
@@ -225,13 +282,69 @@ namespace BacktestingEngine.Services
 
                 return response;
             }
-            catch (Exception ex)
+            catch
             {
-                _logger.LogError($"Error: {ex.Message}");
                 throw;
             }
         }
 
+        private async Task<KlineDatasetEntity?> GetKlineDatasetEntityAsync(DbDatasetDeleteRequestDto request, CancellationToken _token)
+        {
+            var indexStorage = await _dbContext.KlineDatasets
+                .AsNoTracking()
+                .Where(k => k.Symbol == request.Symbol && k.Interval == request.Interval)
+                .Select(k => new KlineDatasetEntity
+                {
+                    Symbol = k.Symbol,
+                    Interval = k.Interval,
+                    FirstOpenTimeMs = k.FirstOpenTimeMs,
+                    LastOpenTimeMs = k.LastOpenTimeMs,
+                    CandlesCount = k.CandlesCount
+                }).SingleOrDefaultAsync(_token);
+            return indexStorage;
+        }
+        public async Task<DbDatasetDeleteResponseDto> DeleteKlinesAsync(DbDatasetDeleteRequestDto request, CancellationToken _token)
+        {
+            await using var transaction =
+                await _dbContext.Database.BeginTransactionAsync(_token);
+            try
+            {
+                var indexStorage = await GetKlineDatasetEntityAsync(request, _token);
+                if (indexStorage != null)
+                {
+                var data = await _dbContext.BinanceKlines
+                .Where(k => k.Symbol == request.Symbol && k.Interval == request.Interval)
+                .ExecuteDeleteAsync(_token);
+                
+                var indexUpdate = indexStorage.CandlesCount - data;
 
+                if(indexUpdate <= 0)
+                {
+                    _dbContext.KlineDatasets.Remove(indexStorage);
+                    await _dbContext.SaveChangesAsync(_token);
+                }
+                else
+                {
+                    throw new InvalidOperationException($"Partial deleting are not finished yet. Please delete all candles for symbol {request.Symbol} and interval {request.Interval}");
+                }
+                await transaction.CommitAsync(_token);
+                return new DbDatasetDeleteResponseDto
+                {
+                    Symbol = request.Symbol,
+                    Interval = request.Interval,
+                    DeletedCount = data
+                };
+                }
+                else
+                {
+                throw new InvalidOperationException($"No dataset found for symbol {request.Symbol} and interval {request.Interval}");
+                }
+            }
+            catch
+            {
+                await transaction.RollbackAsync();
+                throw;
+            }
+        }
     }
 }

@@ -5,18 +5,27 @@ using BacktestingEngine.Engine;
 using BacktestingEngine.Services;
 using BacktestingEngine.Engine.Grid;
 using BacktestingEngine.Engine.Core;
+using Npgsql;
 
 
 var builder = WebApplication.CreateBuilder(args);
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+
+var dataSourceBuilder = new NpgsqlDataSourceBuilder(connectionString);
+dataSourceBuilder.EnableDynamicJson();
+var dataSource = dataSourceBuilder.Build();
+
 
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseNpgsql(dataSource));
+
 
 
 builder.Services.AddHttpClient<IBinanceKlineService, BinanceKlineService>();
 builder.Services.AddScoped<ICandleRepository, CandleRepository>();
 builder.Services.AddScoped<IKlinesUploadFromDbService, KlinesUploadFromDbService>();
 builder.Services.AddScoped<EngineBuilder>();
+builder.Services.AddScoped<IBacktestReusltService, BacktestResultService>();
 
 builder.Services.AddOpenApi();
 builder.Services.AddControllers();

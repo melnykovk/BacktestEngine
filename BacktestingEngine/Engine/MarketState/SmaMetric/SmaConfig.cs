@@ -14,7 +14,7 @@ namespace BacktestingEngine.Engine.MarketState
     public sealed class SmaSetup
     {
         public KlineInterval Interval { get; init; }                           // Type of candle.
-        public KlineInterval BaseInterval { get; init; }                       // Base type of candle
+        public KlineInterval BaseInterval { get; init; }                       // Base type of candle  1s
         public int Period { get; init; }                                       // Quantity of candles.
         public int BaseCandlesPerMetricCandle { get; init; }                   // Quantity of base candles for create 1 metric candle.
         public SmaSetup(SetupDTO setupDTO, RangeBacktestData data)

@@ -11,18 +11,45 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace BacktestingEngine.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260227151057_CreateBinanceKlinesTable")]
-    partial class CreateBinanceKlinesTable
+    [Migration("20261006122921_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "10.0.3")
+                .HasAnnotation("ProductVersion", "10.0.9")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
+
+            modelBuilder.Entity("BacktestingEngine.Entity.KlineDatasetEntity", b =>
+                {
+                    b.Property<string>("Symbol")
+                        .HasColumnType("text")
+                        .HasColumnName("symbol");
+
+                    b.Property<string>("Interval")
+                        .HasColumnType("text")
+                        .HasColumnName("interval");
+
+                    b.Property<int>("CandlesCount")
+                        .HasColumnType("integer")
+                        .HasColumnName("candles_count");
+
+                    b.Property<long>("FirstOpenTimeMs")
+                        .HasColumnType("bigint")
+                        .HasColumnName("first_open_time_ms");
+
+                    b.Property<long>("LastOpenTimeMs")
+                        .HasColumnType("bigint")
+                        .HasColumnName("last_open_time_ms");
+
+                    b.HasKey("Symbol", "Interval");
+
+                    b.ToTable("binance_klines_datasets", "public");
+                });
 
             modelBuilder.Entity("BacktestingEngine.Entity.KlineEntity", b =>
                 {

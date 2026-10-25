@@ -1,7 +1,7 @@
 
 namespace BacktestingEngine.DTO
 {
-    public sealed class DbCandleSummaryDto
+    public sealed class DbCandleSummaryResponseDto
     {
         public string Symbol { get; set; } = "";
         public string Interval { get; set; } = "";
@@ -9,6 +9,19 @@ namespace BacktestingEngine.DTO
         public long LastOpenTimeMs { get; set; }
         public long CandlesCount { get; set; }
     }
+
+    public sealed class DbDatasetDeleteRequestDto
+    {
+        public string Symbol { get; set; } = "";
+        public string Interval { get; set; } = "";
+    }
+    public sealed class DbDatasetDeleteResponseDto
+    {
+        public string Symbol { get; set; } = "";
+        public string Interval { get; set; } = "";
+        public int DeletedCount { get; set; }
+    }
+
 
     public sealed class DbUploadKlinesRequestDto
     {

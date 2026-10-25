@@ -5,7 +5,7 @@
 namespace BacktestingEngine.Migrations
 {
     /// <inheritdoc />
-    public partial class CreateBinanceKlinesTable : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -36,6 +36,22 @@ namespace BacktestingEngine.Migrations
                 {
                     table.PrimaryKey("PK_binance_klines", x => new { x.symbol, x.interval, x.open_time_ms });
                 });
+
+            migrationBuilder.CreateTable(
+                name: "binance_klines_datasets",
+                schema: "public",
+                columns: table => new
+                {
+                    symbol = table.Column<string>(type: "text", nullable: false),
+                    interval = table.Column<string>(type: "text", nullable: false),
+                    first_open_time_ms = table.Column<long>(type: "bigint", nullable: false),
+                    last_open_time_ms = table.Column<long>(type: "bigint", nullable: false),
+                    candles_count = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_binance_klines_datasets", x => new { x.symbol, x.interval });
+                });
         }
 
         /// <inheritdoc />
@@ -43,6 +59,10 @@ namespace BacktestingEngine.Migrations
         {
             migrationBuilder.DropTable(
                 name: "binance_klines",
+                schema: "public");
+
+            migrationBuilder.DropTable(
+                name: "binance_klines_datasets",
                 schema: "public");
         }
     }

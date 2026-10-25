@@ -41,10 +41,22 @@
                                 <th>First Candle</th>
                                 <th>Last Candle</th>
                                 <th>Candles Count</th>
+                                <th>Delete</th>
                             </tr>
                         </thead>
 
-                        <tbody id="dbInfoTableBody"></tbody>
+                        <tbody id="dbInfoTableBody">        
+                            <template id="datasetRowTemplate">
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td><button class="delete-button">Delete</button></td>
+                                </tr>
+                            </template>                 
+                        </tbody>
 
                     </table>
                 </div>
@@ -66,7 +78,7 @@
                 </div>
 
                 <div class="data-input">
-                    <label for="symbol">Interval</label>
+                    <label for="Interval">Interval</label>
                     <select id="interval">
                         <option value="1m">1m</option>
                         <option value="5m">5m</option>
@@ -80,24 +92,33 @@
                 </div>
 
                 <div class="data-input">
-                    <label for="symbol">Start Date</label>
+                    <label for="startDate">Start Date</label>
                     <input type="date" id="startDate">
                 </div>
 
                 <div class="data-input">
-                    <label for="symbol">End Date</label>
+                    <label for="endDate">End Date</label>
                     <input type="date" id="endDate">
                 </div>
 
-                <button id="loadDataButton" class="action-button">
+                <button id="loadDataButton" onclick="handleUploadButton()" class="action-button">
                     <span id="loadSpinner" class="spinner" hidden></span>
                     <span id="loadButtonText">Load Data</span>
                 </button>
 
             </aside>
         </div>
-
-        <script src="js/dbmanager.js"></script>
+        <dialog id="confirmDialog" class="confirm-dialog">
+            <form method="dialog">
+                <h3>Confirm deletion</h3>
+                <p id="confirmMessage"></p>
+                <div class="confirm-actions">
+                    <button type="submit" value="cancel" class="confirm-button">Cancel</button>
+                    <button type="submit" value="confirm" class="confirm-button danger">Delete</button>
+                </div>
+            </form>
+        </dialog>
+        <script type="module" src="js/dbmanager/dbmanagerapi.js"></script>
 </body>
 
 </html>

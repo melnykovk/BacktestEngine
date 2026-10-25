@@ -13,7 +13,7 @@ public sealed class ExecutionModel
 
 
 
-    public bool TryFill(PairOrder pair, EngineCandle engineCandle, out Fill? fill)
+    public bool TryFill(PairOrder pair, in EngineCandle engineCandle, out Fill? fill)
     {
         fill = null;
 

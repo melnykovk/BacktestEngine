@@ -64,8 +64,8 @@ public sealed record Fill(
     decimal Price,              // Btc price in usdt,    e.g. 70000
     decimal FeeQuote,           // Fee in quote currency USDT, e.g. 0.01%
     decimal QuoteAmount,        // Quote amount in USDT, e.g. 50
-    long TradeTime = 0          // Trade time counted on candle close time, for simplicity
-);
+    long TradeTime = 0          // Trade time counted on candle close time, for simplicity);
+    );
 
 public sealed record MarketEvent(
     PairOrder Pair,

@@ -1,21 +1,11 @@
+
 let uploadAbortController = null;
 let isUploading = false;
 
+import { deleteDataset } from "./dbmanagerapi.js";
+
 document.addEventListener("DOMContentLoaded", () => {
     loadDatabaseInfo();
-
-    const loadDataButton = document.getElementById("loadDataButton");
-
-    loadDataButton.addEventListener("click", async () => {
-        await startUpload();
-
-        if (isUploading) {
-            cancelUpload();
-            return;
-        }
-
-
-    });
 });
 
 async function startUpload() {
@@ -69,6 +59,14 @@ async function startUpload() {
 function cancelUpload() {
     if (uploadAbortController) {
         uploadAbortController.abort();
+    }
+}
+
+function handleUploadButton() {
+    if (isUploading) {
+        cancelUpload();
+    } else {
+        startUpload();
     }
 }
 
@@ -162,13 +160,15 @@ async function loadDatabaseInfo() {
             const tr = document.createElement("tr");
 
             tr.innerHTML = `
-                <td>${row.symbol}</td>
-                <td>${row.interval}</td>
-                <td>${formatUnixMsUtc(row.firstOpenTimeMs)}</td>
-                <td>${formatUnixMsUtc(row.lastOpenTimeMs)}</td>
-                <td>${formatNumber(row.candlesCount)}</td>
+            <td>${row.symbol}</td>
+            <td>${row.interval}</td>
+            <td>${formatUnixMsUtc(row.firstOpenTimeMs)}</td>
+            <td>${formatUnixMsUtc(row.lastOpenTimeMs)}</td>
+            <td>${formatNumber(row.candlesCount)}</td>
+            <td></td>
             `;
 
+            tr.lastElementChild.appendChild(createDeleteButton(row.symbol, row.interval));
             tbody.appendChild(tr);
         }
 
@@ -177,6 +177,37 @@ async function loadDatabaseInfo() {
     catch (error) {
         status.textContent = `Error: ${error.message}`;
     }
+}
+
+function createDeleteButton(symbol, interval) {
+    const deleteButton = document.createElement("button");
+            deleteButton.type = "button";
+            deleteButton.className = "delete-button";
+            deleteButton.title = `Delete ${symbol} ${interval} dataset`;
+            deleteButton.textContent = "✕";
+            deleteButton.addEventListener("click", () =>
+                deleteDataset(symbol, interval, deleteButton)
+            );
+            return deleteButton;
+        }
+
+
+        
+
+export function confirmDialog(message) {
+    const dialog = document.getElementById("confirmDialog");
+    document.getElementById("confirmMessage").textContent = message;
+
+    dialog.returnValue = "";
+    dialog.showModal();
+
+    return new Promise(resolve => {
+        dialog.addEventListener(
+            "close",
+            () => resolve(dialog.returnValue === "confirm"),
+            { once: true }
+        );
+    });
 }
 
 function formatUnixMsUtc(ms) {

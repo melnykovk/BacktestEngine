@@ -1,0 +1,37 @@
+.result-block {
+    width: 100%;
+    max-width: 100%;
+    margin-top: 20px;
+    box-sizing: border-box;
+    min-width: 0;
+    overflow: auto;
+    padding: 12px;
+  
+}
+.result-block h2 {
+    margin: 0 0 10px 0;
+    font-size: 22px;
+}
+
+#result {
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    max-height: 300px;
+    overflow: auto;
+    margin: 0;
+    padding: 12px;
+    box-sizing: border-box;
+
+    background: #1e1e1e;
+    color: #dcdcdc;
+    border-radius: 6px;
+    box-shadow: 0 1px 3px rgb(0, 0, 0);
+    font-family: Consolas, monospace;
+    font-size: 14px;
+    line-height: 1.5;
+
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    word-break: break-all;
+}

@@ -7,12 +7,11 @@ namespace BacktestingEngine.Services
 {
     public interface IKlinesUploadFromDbService
     {
-        Task<IReadOnlyList<KlineDTO>> GetKlinesAsync(RangeBacktestData rangeData);
+        Task<IReadOnlyList<KlineDTO>> GetKlinesAsync(RangeBacktestData rangeData, CancellationToken _token);
 
-        Task<IReadOnlyList<EngineCandle>> GetKlinesForEngineAsync(RangeBacktestData rangeData);
+        Task<EngineCandle[]> GetKlinesForEngineAsync(RangeBacktestData rangeData, CancellationToken _token);
 
-        Task CheckKlinesOnErrors(RangeBacktestData rangeData);
-        Task<IReadOnlyList<DbCandleSummaryDto>> GetCandleDatasetsSummaryAsync();
+        Task CheckKlinesOnErrors(RangeBacktestData rangeData, CancellationToken _token);
     }
 
 
@@ -26,11 +25,11 @@ namespace BacktestingEngine.Services
             _logger = logger;
         }
 
-
-        public async Task<IReadOnlyList<KlineDTO>> GetKlinesAsync(RangeBacktestData rangeData)
+        
+        public async Task<IReadOnlyList<KlineDTO>> GetKlinesAsync(RangeBacktestData rangeData, CancellationToken _token)
         {
 
-            var candles = await GetKlinesFromDBAsyncValidate(rangeData.Symbol, rangeData.Interval, rangeData.StartDate, rangeData.EndDate);
+            var candles = await GetKlinesFromDBAsyncValidate(rangeData.Symbol, rangeData.Interval, rangeData.StartDate, rangeData.EndDate, _token);
 
             return candles
             .Select(c => new KlineDTO(
@@ -49,26 +48,30 @@ namespace BacktestingEngine.Services
         }
 
 
-        public async Task<IReadOnlyList<EngineCandle>> GetKlinesForEngineAsync(RangeBacktestData rangeData)
+        public async Task<EngineCandle[]> GetKlinesForEngineAsync(RangeBacktestData rangeData, CancellationToken _token)
         {
 
-            var candles = await GetKlinesFromDBAsyncValidate(rangeData.Symbol, rangeData.Interval, rangeData.StartDate, rangeData.EndDate);
-
-            return candles
-            .Select(c => new EngineCandle(
-                c.OpenTimeMs,
-                c.Open,
-                c.High,
-                c.Low,
-                c.Close,
-                c.Volume,
-                c.CloseTimeMs
-                ))
-            .ToList();
+            var candles = await GetKlinesFromDBAsyncValidate(rangeData.Symbol, rangeData.Interval, rangeData.StartDate, rangeData.EndDate, _token);
+            var result = new EngineCandle[candles.Count];
+            for (int i = 0; i < candles.Count; i++)
+            {
+                var candle = candles[i];
+                _token.ThrowIfCancellationRequested();
+                result[i] = new EngineCandle(
+                    candle.OpenTimeMs,
+                    candle.Open,
+                    candle.High,
+                    candle.Low,
+                    candle.Close,
+                    candle.Volume,
+                    candle.CloseTimeMs
+                );
+            }
+            return result;
         }
 
 
-        private async Task<IReadOnlyList<KlineEntity>> GetKlinesFromDBAsyncValidate(string symbol, string interval, DateTime startDate, DateTime endDate)
+        private async Task<IReadOnlyList<KlineEntity>> GetKlinesFromDBAsyncValidate(string symbol, string interval, DateTime startDate, DateTime endDate, CancellationToken _token)
         {
 
             if (string.IsNullOrWhiteSpace(symbol))
@@ -87,17 +90,17 @@ namespace BacktestingEngine.Services
                 throw new ArgumentException("Start date must be earlier than end date.", nameof(startDate));
 
 
-            var candles = await _candleRepository.GetKlinesAsync(symbol, interval, startTimeMs, endTimeMs);
+            var candles = await _candleRepository.GetKlinesAsync(symbol, interval, startTimeMs, endTimeMs, _token);
 
             return candles;
         }
 
 
-        public async Task CheckKlinesOnErrors(RangeBacktestData rangeData)
+        public async Task CheckKlinesOnErrors(RangeBacktestData rangeData, CancellationToken _token)
         {
 
             var _marketContext = new MarketContext(rangeData.Symbol, rangeData.Interval);
-            var klines = await GetKlinesForEngineAsync(rangeData);
+            var klines = await GetKlinesForEngineAsync(rangeData, _token);
 
 
             foreach (var k in klines)
@@ -121,11 +124,6 @@ namespace BacktestingEngine.Services
                 rangeData.Symbol, rangeData.Interval, _marketContext.Index);
         }
 
-
-        public async Task<IReadOnlyList<DbCandleSummaryDto>> GetCandleDatasetsSummaryAsync()
-        {
-            return await _candleRepository.GetCandleDatasetsSummaryAsync();
-        }
 
     }
 }

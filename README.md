@@ -15,10 +15,14 @@ This is a research/simulation tool, not a live trading system: it prioritizes co
 - **Conservative intrabar fills** — limit orders fill on intrabar touch (Low <= price for buys, High >= price for sells), not on close. Fills execute at the order price — a never-optimistic assumption for limit orders.
 - **Timeframe decoupling** — indicator timeframes are independent of the engine timeframe. Intervals are encoded as seconds, reducing "base candles per metric candle" to arithmetic (target / base) with a divisibility check. Any timeframe combination is configured, not coded.
 - **Separated data models** — distinct types for the runtime candle (EngineCandle, an immutable record struct on the hot path), the stored entity, and a denormalized dataset summary holding precomputed aggregates — so listing datasets never runs COUNT over millions of rows.
+- **Parallel backtesting** — independent parameter configurations run concurrently using Task.Run and the .NET ThreadPool, enabling large parameter sweeps without introducing a separate worker infrastructure.
+- **Persistent backtest results** — batch runs and their statistics are stored in PostgreSQL, keeping results available after execution and allowing batches to be retrieved later by ID.
+- **CSV export** — saved backtest statistics can be exported to CSV for external analysis in spreadsheets and other data-analysis tools.
+- **Historical dataset management** — stored market data is indexed by symbol and timeframe, with precomputed dataset metadata for efficient listing and explicit upload/delete operations.
+- **React + TypeScript frontend** — the UI is separated from the ASP.NET Core backend into a Vite-based React application, with API calls, DTOs, and feature-specific logic organized into dedicated modules.
 - **Layered strategy model (in progress)** — a Metrics → Rules → Policy hierarchy separates computing signals from reacting to them from managing decisions (a position/mode state machine). Seams follow axes of change, so adding a rule doesn't touch the infrastructure.
 
-
-## Architecture
+## Engine architecture
 
 ### Components
 
@@ -101,10 +105,11 @@ Deliberate simplifications of a simulation engine:
 
 
 - Complete the Metrics → Rules → Policy layer; multiple indicators (EMA, RSI, …), each independently parameterized, sharing a reusable rolling-window primitive.
-- Distributed parameter sweeps. With several parameterized indicators plus fine-grained timeframes (down to 1s), the parameter space grows combinatorially and individual runs get heavier. Since each run is an independent, stateless unit (candles in, stats out), the workload is embarrassingly parallel — designed to fan out across cloud workers (AWS/Azure) over a shared dataset store, so large sweeps run in parallel rather than sequentially.
+
 
 
 **v3**
+- Horizontal scaling via cloud
 
 
 - Hedging / short-side rules and capital allocation across sub-strategies.

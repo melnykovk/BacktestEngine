@@ -14,13 +14,13 @@ This is a research/simulation tool, not a live trading system: it prioritizes co
 
 Configure grid parameters, select a historical dataset and date range, and run backtests through the web interface.
 
-![Backtest configuration and execution](docs/screenshots/backtestConfig.png)
+![Backtest configuration and execution](docs/backtestConfig.png)
 
 ### Historical dataset management
 
 Browse stored market data by symbol and timeframe, inspect dataset coverage, and manage historical datasets.
 
-![Historical dataset management](docs/screenshots/datasetInformation.png)
+![Historical dataset management](docs/datasetInformation.png)
 
 ## Key design decisions
 

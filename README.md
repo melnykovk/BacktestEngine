@@ -56,18 +56,15 @@ Data flows one way; lower layers know nothing about higher ones. RollingMean tak
 
 ## Tech stack
 
-.NET 10 · ASP.NET Core (Web API + web UI) · PostgreSQL via EF Core (code-first, Npgsql) · Binance.Net (REST + websocket) · SignalR · xUnit
+.NET 10 · ASP.NET Core · React · TypeScript · PostgreSQL via EF Core (code-first, Npgsql) · Binance.Net · xUnit 
 
 ## Features
 
 **Working**
 
-
-- Ingest OHLCV candles from Binance into PostgreSQL for any symbol / timeframe / range; add or remove datasets on demand.
-- Backtest a grid strategy over any stored dataset, by timeframe and date range.
-- Configurable per run: fee rate, order size, starting balance, grid step.
-- Web UI for dataset management and running backtests, with real-time updates.
-
+- Metric analyze layer
+- Desicion system 
+- Adding drag-and-drop support for datasets in .zip/.rar format from Binance (1s interval)
 
 **In progress**
 
@@ -78,12 +75,12 @@ Data flows one way; lower layers know nothing about higher ones. RollingMean tak
 
 ## Getting started
 
-Prerequisites: .NET 10 SDK, PostgreSQL.
+Prerequisites: .NET 10 SDK, React, Vite, PostgreSQL.
 
 
 - Set the connection string in appsettings.json (ConnectionStrings:DefaultConnection).
 - Apply migrations: dotnet ef database update
-- Run: dotnet run
+- Run: dotnet run in /BacktestingEngine/ folder, then npm run dev in /BacktestingEngine/Client/
 - Open the web UI in a browser.
 
 

@@ -59,18 +59,12 @@ Data flows one way; lower layers know nothing about higher ones. RollingMean tak
 
 ## Features
 
-**Working**
-
-- Metric analysis layer
-- Decision system 
-- Adding drag-and-drop support for datasets in .zip/.rar format from Binance (1s interval)
-
 **In progress**
-
 
 - Metrics → Rules → Policy layer for expressing strategy behaviour.
 - SMA indicators with multi-timeframe aggregation.
-
+- Decision system 
+- Adding drag-and-drop support for datasets in .zip/.rar format from Binance (1s interval)
 
 ## Getting started
 
